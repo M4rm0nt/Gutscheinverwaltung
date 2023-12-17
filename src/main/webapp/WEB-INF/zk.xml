@@ -1,0 +1,8 @@
+<zk>
+    <session-config>
+        <timeout>30</timeout> <!-- session timeout in minutes -->
+    </session-config>
+    <system-config>
+        <disable-event-thread>false</disable-event-thread>
+    </system-config>
+</zk>

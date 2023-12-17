@@ -1,0 +1,24 @@
+<zk>
+    <style>
+        .centered-label {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        }
+    </style>
+    <window id="mainWindow" apply="com.gutscheinverwaltung.controller.GutscheinController" title="Geldkartenverwaltung" border="normal" width="80%">
+        <vbox id="gutscheinContainer" spacing="15px" width="100%">
+            <!-- Dynamische GroupBoxes für Gutscheine werden im Java-Code hinzugefügt -->
+        </vbox>
+        <!-- Bereich für Gesamtpreis -->
+        <hbox spacing="10px" style="margin-top:15px">
+            <label value="Gesamtpreis der Bestellung:" />
+            <label id="gesamtpreisLabel" value="0,00 €" />
+        </hbox>
+        <!-- Separater Bereich für Buttons -->
+        <hbox spacing="10px" style="margin-top:15px">
+            <button id="btAbschicken" label="Bestellen" width="150px"/>
+            <button id="btAbbrechen" label="Abbrechen" width="150px"/>
+        </hbox>
+    </window>
+</zk>
