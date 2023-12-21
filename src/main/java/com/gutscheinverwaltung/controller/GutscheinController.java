@@ -47,7 +47,7 @@ public class GutscheinController extends SelectorComposer<Component> {
         }
     }
 
-    private void createGutscheinUI(Gutschein gutschein) throws IOException {
+    private void createGutscheinUI(Gutschein gutschein) {
 
         try {
 
@@ -62,20 +62,27 @@ public class GutscheinController extends SelectorComposer<Component> {
             hbox.setWidth("100%");
             groupBox.appendChild(hbox);
 
+            // Neue HBox für Button und Combobox
+            Hbox buttonComboboxHbox = new Hbox();
+            buttonComboboxHbox.setSpacing("10px"); // Setzt den Abstand zwischen den Elementen
+
             // Erstellen des Bearbeiten-Buttons
             Button editButton = new Button("Bearbeiten");
             editButton.addEventListener(Events.ON_CLICK, event -> onEditGutschein(gutschein));
+            buttonComboboxHbox.appendChild(editButton); // Fügt den Button zur neuen HBox hinzu
 
-            // Fügen Sie den Button zur Benutzeroberfläche hinzu
-            hbox.appendChild(editButton);
-
+            // Prüfen, ob ein Bild vorhanden ist, und falls ja, dieses hinzufügen
             if (gutschein.getBild() != null) {
                 Vbox imageBox = getImageBox(gutschein);
                 hbox.appendChild(imageBox);
             }
 
+            // InfoBox hinzufügen
             Vbox infoBox = getGutscheinInfoBox(gutschein);
             hbox.appendChild(infoBox);
+
+            // Fügen Sie die neue HBox mit dem Bearbeiten-Button und der Combobox zur Haupt-HBox hinzu
+            hbox.appendChild(buttonComboboxHbox);
 
             gutscheinContainer.appendChild(groupBox);
 
@@ -186,7 +193,7 @@ public class GutscheinController extends SelectorComposer<Component> {
         Map<String, Object> args = new HashMap<>();
         args.put("gutschein", gutschein);
         Window window = (Window) Executions.createComponents("editGutschein.zul", null, args);
-        window.doModal(); // Diese Zeile macht das Fenster modal
+        window.doModal();
     }
 
 
