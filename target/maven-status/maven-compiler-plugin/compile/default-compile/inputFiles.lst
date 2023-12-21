@@ -2,5 +2,4 @@
 /home/marmont/dev/zk/project1/gutscheinverwaltungApp/src/main/java/com/gutscheinverwaltung/service/GutscheinService.java
 /home/marmont/dev/zk/project1/gutscheinverwaltungApp/src/main/java/com/gutscheinverwaltung/controller/GutscheinController.java
 /home/marmont/dev/zk/project1/gutscheinverwaltungApp/src/main/java/com/gutscheinverwaltung/util/DatabaseConnection.java
-/home/marmont/dev/zk/project1/gutscheinverwaltungApp/src/main/java/com/gutscheinverwaltung/controller/AdminController.java
 /home/marmont/dev/zk/project1/gutscheinverwaltungApp/src/main/java/com/gutscheinverwaltung/model/Gutschein.java

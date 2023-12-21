@@ -6,6 +6,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.zkoss.image.AImage;
 import org.zkoss.zk.ui.Component;
+import org.zkoss.zk.ui.Executions;
 import org.zkoss.zk.ui.event.Events;
 import org.zkoss.zk.ui.event.SelectEvent;
 import org.zkoss.zk.ui.select.SelectorComposer;
@@ -60,6 +61,13 @@ public class GutscheinController extends SelectorComposer<Component> {
             hbox.setPack("start");
             hbox.setWidth("100%");
             groupBox.appendChild(hbox);
+
+            // Erstellen des Bearbeiten-Buttons
+            Button editButton = new Button("Bearbeiten");
+            editButton.addEventListener(Events.ON_CLICK, event -> onEditGutschein(gutschein));
+
+            // Fügen Sie den Button zur Benutzeroberfläche hinzu
+            hbox.appendChild(editButton);
 
             if (gutschein.getBild() != null) {
                 Vbox imageBox = getImageBox(gutschein);
@@ -173,5 +181,13 @@ public class GutscheinController extends SelectorComposer<Component> {
     private void updateGesamtpreisLabel(double total) {
         gesamtpreisLabel.setValue(String.format("%.2f", total) + " €");
     }
+
+    public void onEditGutschein(Gutschein gutschein) {
+        Map<String, Object> args = new HashMap<>();
+        args.put("gutschein", gutschein);
+        Window window = (Window) Executions.createComponents("editGutschein.zul", null, args);
+        window.doModal(); // Diese Zeile macht das Fenster modal
+    }
+
 
 }

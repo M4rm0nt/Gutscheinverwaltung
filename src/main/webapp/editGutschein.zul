@@ -1,0 +1,33 @@
+<zk xmlns="http://www.zkoss.org/2005/zul">
+    <window title="Gutschein bearbeiten" border="normal" closable="true" width="400px">
+        <vlayout>
+            <hlayout>
+                <label value="Gutscheinart:"/>
+                <textbox id="txtGutscheinart" width="200px"/>
+            </hlayout>
+            <hlayout>
+                <label value="Preis pro Stück:"/>
+                <doublebox id="dbPreisProStueck" width="200px"/>
+            </hlayout>
+            <hlayout>
+                <label value="Bild:"/>
+                <button label="Bild hochladen" upload="true" onUpload="@command('uploadImage', event=event)"/>
+            </hlayout>
+            <hlayout>
+                <label value="Werte:"/>
+                <listbox id="lbWerte" multiple="true" checkmark="true" model="@load(gutschein.werte)" width="200px">
+                    <listhead>
+                        <listheader label="Wert"/>
+                    </listhead>
+                    <template name="model" var="wert">
+                        <listitem label="${wert}"/>
+                    </template>
+                </listbox>
+            </hlayout>
+            <hlayout>
+                <button label="Speichern" onClick="@command('speichern')"/>
+                <button label="Abbrechen" onClick="@command('abbrechen')"/>
+            </hlayout>
+        </vlayout>
+    </window>
+</zk>

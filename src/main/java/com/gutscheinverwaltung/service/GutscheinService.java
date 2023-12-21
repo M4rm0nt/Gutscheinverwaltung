@@ -2,6 +2,7 @@ package com.gutscheinverwaltung.service;
 
 import com.gutscheinverwaltung.dao.GutscheinDao;
 import com.gutscheinverwaltung.model.Gutschein;
+import org.zkoss.util.media.Media;
 
 import java.sql.SQLException;
 import java.util.List;
@@ -29,12 +30,5 @@ public class GutscheinService {
         }
     }
 
-    public void addGutschein(Gutschein gutschein) throws SQLException {
-        try {
-            gutscheinDao.addGutschein(gutschein);
-        } catch (ClassNotFoundException e) {
-            throw new SQLException("Database driver not found.", e);
-        }
-    }
 }
 
