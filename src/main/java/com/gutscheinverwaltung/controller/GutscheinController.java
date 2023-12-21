@@ -28,6 +28,8 @@ public class GutscheinController extends SelectorComposer<Component> {
 
     private final Map<Gutschein, Combobox> ausgewaehlteGutscheine = new HashMap<>();
 
+    GutscheinService gutscheinService = GutscheinService.getInstance();
+
     @Override
     public void doAfterCompose(Component comp) throws Exception {
         super.doAfterCompose(comp);
@@ -37,7 +39,7 @@ public class GutscheinController extends SelectorComposer<Component> {
     private void loadGutscheine() {
 
         try {
-            List<Gutschein> gutscheine = GutscheinService.getInstance().getAllGutscheine();
+            List<Gutschein> gutscheine = gutscheinService.getAllGutscheine();
             gutscheine.sort(Comparator.comparing(Gutschein::getGutscheinArt));
             for (Gutschein gutschein : gutscheine) {
                 createGutscheinUI(gutschein);
@@ -135,7 +137,7 @@ public class GutscheinController extends SelectorComposer<Component> {
             }
             double gesamtpreis = ausgewaehlterWert * gutschein.getPreisProStueck();
             gesamtpreisLabel.setValue(String.format("Gesamtpreis: %.2f €", gesamtpreis));
-            updateGesamtpreisLabel(calculateGesamtpreis());
+            updateGesamtpreisLabel();
         });
 
         ausgewaehlteGutscheine.put(gutschein, combobox);
@@ -164,29 +166,9 @@ public class GutscheinController extends SelectorComposer<Component> {
         return combobox;
     }
 
-    private double calculateGesamtpreis() {
-        double gesamtpreis = 0.0;
-        for (Gutschein gutschein : ausgewaehlteGutscheine.keySet()) {
-            Combobox combobox = ausgewaehlteGutscheine.get(gutschein);
-            Comboitem selectedItem = combobox.getSelectedItem();
-            if (selectedItem != null) {
-                String ausgewaehlterWertString = selectedItem.getLabel().replace(",", ".");
-                float ausgewaehlterWert;
-                try {
-                    ausgewaehlterWert = Float.parseFloat(ausgewaehlterWertString);
-                } catch (NumberFormatException nfe) {
-                    logger.error("Ungültiger Wert: " + ausgewaehlterWertString, nfe);
-                    continue;
-                }
-                double preis = ausgewaehlterWert * gutschein.getPreisProStueck();
-                gesamtpreis += preis;
-            }
-        }
-        return gesamtpreis;
-    }
-
-    private void updateGesamtpreisLabel(double total) {
-        gesamtpreisLabel.setValue(String.format("%.2f", total) + " €");
+    private void updateGesamtpreisLabel() {
+        double gesamtpreis = GutscheinService.getInstance().calculateGesamtpreis(ausgewaehlteGutscheine);
+        gesamtpreisLabel.setValue(String.format("%.2f", gesamtpreis) + " €");
     }
 
     public void onEditGutschein(Gutschein gutschein) {

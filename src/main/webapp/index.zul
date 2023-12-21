@@ -7,18 +7,38 @@
         }
     </style>
     <window id="mainWindow" apply="com.gutscheinverwaltung.controller.GutscheinController" title="Geldkartenverwaltung" border="normal" width="80%">
-        <vbox id="gutscheinContainer" spacing="15px" width="100%">
-            <!-- Dynamische GroupBoxes für Gutscheine werden im Java-Code hinzugefügt -->
-        </vbox>
-        <!-- Bereich für Gesamtpreis -->
-        <hbox spacing="10px" style="margin-top:15px">
-            <label value="Gesamtpreis der Bestellung:" />
-            <label id="gesamtpreisLabel" value="0,00 €" />
-        </hbox>
-        <!-- Separater Bereich für Buttons -->
-        <hbox spacing="10px" style="margin-top:15px">
-            <button id="btAbschicken" label="Bestellen" width="150px"/>
-            <button id="btAbbrechen" label="Abbrechen" width="150px"/>
-        </hbox>
+
+        <tabbox width="100%">
+            <tabs>
+                <tab label="Gutscheine"/>
+                <tab label="Andere Ansicht"/>
+                <!-- Weitere Tabs hier -->
+            </tabs>
+            <tabpanels>
+                <tabpanel>
+                    <!-- Inhalt für Gutscheine -->
+                    <vbox id="gutscheinContainer" spacing="15px" width="100%">
+                        <!-- Dynamische GroupBoxes für Gutscheine werden im Java-Code hinzugefügt -->
+                    </vbox>
+                    <!-- Bereich für Gesamtpreis -->
+                    <hbox spacing="10px" style="margin-top:15px">
+                        <label value="Gesamtpreis der Bestellung:" />
+                        <label id="gesamtpreisLabel" value="0,00 €" />
+                    </hbox>
+                    <!-- Separater Bereich für Buttons -->
+                    <hbox spacing="10px" style="margin-top:15px">
+                        <button id="btAbschicken" label="Bestellen" width="150px"/>
+                        <button id="btAbbrechen" label="Abbrechen" width="150px"/>
+                    </hbox>
+                </tabpanel>
+                <tabpanel>
+                    <!-- Inhalt für andere Ansicht -->
+                    <label value="Inhalt für eine andere Ansicht"/>
+                    <!-- Weitere Komponenten hier -->
+                </tabpanel>
+                <!-- Weitere Tabpanels hier -->
+            </tabpanels>
+        </tabbox>
+
     </window>
 </zk>
