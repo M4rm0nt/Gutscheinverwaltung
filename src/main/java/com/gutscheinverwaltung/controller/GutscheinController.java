@@ -64,26 +64,23 @@ public class GutscheinController extends SelectorComposer<Component> {
             hbox.setWidth("100%");
             groupBox.appendChild(hbox);
 
-            // Neue HBox für Button und Combobox
             Hbox buttonComboboxHbox = new Hbox();
-            buttonComboboxHbox.setSpacing("10px"); // Setzt den Abstand zwischen den Elementen
+            buttonComboboxHbox.setSpacing("10px");
 
-            // Erstellen des Bearbeiten-Buttons
+            /* Soll später wieder eingebaut werden:
             Button editButton = new Button("Bearbeiten");
             editButton.addEventListener(Events.ON_CLICK, event -> onEditGutschein(gutschein));
-            buttonComboboxHbox.appendChild(editButton); // Fügt den Button zur neuen HBox hinzu
+            buttonComboboxHbox.appendChild(editButton);
+             */
 
-            // Prüfen, ob ein Bild vorhanden ist, und falls ja, dieses hinzufügen
             if (gutschein.getBild() != null) {
                 Vbox imageBox = getImageBox(gutschein);
                 hbox.appendChild(imageBox);
             }
 
-            // InfoBox hinzufügen
             Vbox infoBox = getGutscheinInfoBox(gutschein);
             hbox.appendChild(infoBox);
 
-            // Fügen Sie die neue HBox mit dem Bearbeiten-Button und der Combobox zur Haupt-HBox hinzu
             hbox.appendChild(buttonComboboxHbox);
 
             gutscheinContainer.appendChild(groupBox);
@@ -97,12 +94,12 @@ public class GutscheinController extends SelectorComposer<Component> {
         AImage aImage = new AImage("", gutschein.getBild());
         Image image = new Image();
         image.setContent(aImage);
-        image.setWidth("533px");  // Bildbreite
-        image.setHeight("300px"); // Bildhöhe
+        image.setWidth("533px");
+        image.setHeight("300px");
 
         Vbox imageBox = new Vbox();
-        imageBox.setWidth("533px"); // Breite des Containers angepasst an die Bildbreite
-        imageBox.setSclass("centered-content");  // Anwendung der CSS-Klasse
+        imageBox.setWidth("533px");
+        imageBox.setSclass("centered-content");
         imageBox.appendChild(image);
 
         Label preisLabel = new Label("VPE: " + String.format("%.2f", gutschein.getPreisProStueck()) + " €" + " pro Stück");
@@ -148,21 +145,17 @@ public class GutscheinController extends SelectorComposer<Component> {
     private Combobox getGutscheinCombobox(Gutschein gutschein) {
         Combobox combobox = new Combobox();
         combobox.setAutodrop(true);
-
-        // Erstellt eine neue Liste aus den Werten und sortiert sie
         List<Integer> sortedValues = new ArrayList<>(gutschein.getWerte());
         Collections.sort(sortedValues);
 
-        // Fügt die sortierten Werte zur Combobox hinzu
         for (Integer wert : sortedValues) {
             Comboitem item = new Comboitem(wert.toString());
             combobox.appendChild(item);
         }
 
-        // Setzt den ersten Wert aus der sortierten Liste als ausgewählten Wert
         combobox.setSelectedItem(combobox.getItemAtIndex(0));
-
         combobox.setAutodrop(true);
+
         return combobox;
     }
 
@@ -189,14 +182,5 @@ public class GutscheinController extends SelectorComposer<Component> {
                 .sum();
         gesamtpreisLabel.setValue(String.format("Gesamtpreis: %.2f €", gesamtpreis));
     }
-
-
-    public void onEditGutschein(Gutschein gutschein) {
-        Map<String, Object> args = new HashMap<>();
-        args.put("gutschein", gutschein);
-        Window window = (Window) Executions.createComponents("editGutschein.zul", null, args);
-        window.doModal();
-    }
-
 
 }
