@@ -10,18 +10,19 @@ import java.util.List;
 import java.util.Map;
 
 public class GutscheinService {
-    private static GutscheinService instance;
+
+    private static class Holder {
+        static final GutscheinService INSTANCE = new GutscheinService();
+    }
+
+    public static GutscheinService getInstance() {
+        return Holder.INSTANCE;
+    }
+
     private final GutscheinDao gutscheinDao;
 
     private GutscheinService() {
         this.gutscheinDao = GutscheinDao.getInstance();
-    }
-
-    public static synchronized GutscheinService getInstance() {
-        if (instance == null) {
-            instance = new GutscheinService();
-        }
-        return instance;
     }
 
     public List<Gutschein> getAllGutscheine() throws SQLException {
@@ -32,24 +33,7 @@ public class GutscheinService {
         }
     }
 
-    public double calculateGesamtpreis(Map<Gutschein, Combobox> ausgewaehlteGutscheine) {
-        double gesamtpreis = 0.0;
-        for (Gutschein gutschein : ausgewaehlteGutscheine.keySet()) {
-            Combobox combobox = ausgewaehlteGutscheine.get(gutschein);
-            Comboitem selectedItem = combobox.getSelectedItem();
-            if (selectedItem != null) {
-                String ausgewaehlterWertString = selectedItem.getLabel().replace(",", ".");
-                float ausgewaehlterWert;
-                try {
-                    ausgewaehlterWert = Float.parseFloat(ausgewaehlterWertString);
-                } catch (NumberFormatException nfe) {
-                    // Log error and continue with next iteration
-                    continue;
-                }
-                double preis = ausgewaehlterWert * gutschein.getPreisProStueck();
-                gesamtpreis += preis;
-            }
-        }
-        return gesamtpreis;
+    public double berechneGesamtpreis(Gutschein gutschein, int comboboxWert) {
+        return gutschein.getPreisProStueck() * comboboxWert;
     }
 }

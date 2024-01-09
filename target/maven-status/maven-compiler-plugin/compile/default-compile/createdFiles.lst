@@ -1,6 +1,7 @@
 com/gutscheinverwaltung/dao/GutscheinDao.class
 com/gutscheinverwaltung/controller/GutscheinController.class
 com/gutscheinverwaltung/util/DatabaseConnection.class
+com/gutscheinverwaltung/service/GutscheinService$Holder.class
 com/gutscheinverwaltung/service/GutscheinService.class
 com/gutscheinverwaltung/ui/GutscheinUIBuilder.class
 com/gutscheinverwaltung/model/Gutschein.class

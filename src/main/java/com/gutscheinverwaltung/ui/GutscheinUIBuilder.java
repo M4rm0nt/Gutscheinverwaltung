@@ -1,51 +1,56 @@
 package com.gutscheinverwaltung.ui;
 
 import com.gutscheinverwaltung.model.Gutschein;
-import com.gutscheinverwaltung.controller.GutscheinController;
 import org.zkoss.image.AImage;
-import org.zkoss.zk.ui.event.Events;
-import org.zkoss.zk.ui.event.SelectEvent;
 import org.zkoss.zul.*;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
 public class GutscheinUIBuilder {
 
-    public static Groupbox createGutscheinComponent(Gutschein gutschein, GutscheinController controller) throws IOException {
+    private static final String IMAGE_WIDTH = "533px";
+    private static final String IMAGE_HEIGHT = "300px";
+
+    public static Groupbox createGutscheinComponent(Gutschein gutschein) throws IOException {
+
+        // Wrapper-Box
         Groupbox groupBox = new Groupbox();
         groupBox.setTitle(gutschein.getGutscheinArt());
         groupBox.setMold("3d");
         groupBox.setWidth("100%");
 
+        // Haupt-Container
         Hbox hbox = new Hbox();
         hbox.setAlign("center");
         hbox.setPack("start");
         hbox.setWidth("100%");
         groupBox.appendChild(hbox);
 
+        // Hauptkomponente 1: Bild
         if (gutschein.getBild() != null) {
             Vbox imageBox = getImageBox(gutschein);
             hbox.appendChild(imageBox);
         }
 
-        Vbox infoBox = getGutscheinInfoBox(gutschein, controller);
+        // Hauptkomponente 2: Info-Box
+        Vbox infoBox = getGutscheinInfoBox(gutschein);
         hbox.appendChild(infoBox);
 
         return groupBox;
     }
 
     private static Vbox getImageBox(Gutschein gutschein) throws IOException {
+
         AImage aImage = new AImage("", gutschein.getBild());
         Image image = new Image();
         image.setContent(aImage);
-        image.setWidth("533px");
-        image.setHeight("300px");
+        image.setWidth(IMAGE_WIDTH);
+        image.setHeight(IMAGE_HEIGHT);
 
         Vbox imageBox = new Vbox();
-        imageBox.setWidth("533px");
+        imageBox.setWidth(IMAGE_WIDTH);
         imageBox.setSclass("centered-content");
         imageBox.appendChild(image);
 
@@ -56,7 +61,8 @@ public class GutscheinUIBuilder {
         return imageBox;
     }
 
-    private static Vbox getGutscheinInfoBox(Gutschein gutschein, GutscheinController controller) {
+    private static Vbox getGutscheinInfoBox(Gutschein gutschein) {
+
         Vbox infoBox = new Vbox();
         infoBox.setSpacing("10px");
 
@@ -66,34 +72,30 @@ public class GutscheinUIBuilder {
         Combobox combobox = getGutscheinCombobox(gutschein);
         infoBox.appendChild(combobox);
 
-        combobox.addEventListener(Events.ON_SELECT, event -> {
-            SelectEvent selectEvent = (SelectEvent) event;
-            Comboitem selectedItem = (Comboitem) selectEvent.getSelectedItems().iterator().next();
-            int ausgewaehlterWert;
-            try {
-                ausgewaehlterWert = Integer.parseInt(selectedItem.getLabel());
-                controller.updateAusgewaehlteGutscheine(gutschein, ausgewaehlterWert);
-            } catch (NumberFormatException nfe) {
-                // Log
-            }
-        });
+        Label infoBoxPreisLable = new Label("Gesamtpreis: 0,00 €");
+        infoBoxPreisLable.setId("infoBoxPreisLable_" + gutschein.getGutscheinId());
+        infoBox.appendChild(infoBoxPreisLable);
 
         return infoBox;
     }
 
     private static Combobox getGutscheinCombobox(Gutschein gutschein) {
+
         Combobox combobox = new Combobox();
         combobox.setAutodrop(true);
 
-        List<Integer> sortierteWerte = new ArrayList<>(gutschein.getWerte());
-        Collections.sort(sortierteWerte);
+        List<Integer> werte = gutschein.getWerte();
+        Collections.sort(werte);
 
-        for (Integer wert : sortierteWerte) {
+        for (Integer wert : werte) {
             Comboitem item = new Comboitem(wert.toString());
             combobox.appendChild(item);
         }
 
-        combobox.setSelectedItem(combobox.getItemAtIndex(0));
+        if (!combobox.getItems().isEmpty()) {
+            combobox.setSelectedIndex(0);
+        }
+
         return combobox;
     }
 }
