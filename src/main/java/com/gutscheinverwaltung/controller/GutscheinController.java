@@ -171,6 +171,26 @@ public class GutscheinController extends SelectorComposer<Component> {
         gesamtpreisLabel.setValue(String.format("%.2f", gesamtpreis) + " €");
     }
 
+    public void updateAusgewaehlteGutscheine(Gutschein gutschein, int ausgewaehlteAnzahl) {
+        Combobox combobox = new Combobox();
+        combobox.setValue(String.valueOf(ausgewaehlteAnzahl));
+        ausgewaehlteGutscheine.put(gutschein, combobox);
+        updateGesamtpreis();
+    }
+
+
+    public void updateGesamtpreis() {
+        double gesamtpreis = ausgewaehlteGutscheine.entrySet().stream()
+                .mapToDouble(entry -> {
+                    String valueStr = entry.getValue().getValue();
+                    int numericValue = Integer.parseInt(valueStr);
+                    return entry.getKey().getPreisProStueck() * numericValue;
+                })
+                .sum();
+        gesamtpreisLabel.setValue(String.format("Gesamtpreis: %.2f €", gesamtpreis));
+    }
+
+
     public void onEditGutschein(Gutschein gutschein) {
         Map<String, Object> args = new HashMap<>();
         args.put("gutschein", gutschein);
